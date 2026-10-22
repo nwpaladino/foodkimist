@@ -32,4 +32,4 @@ window.PRODUCTS = [
   "image": "./images/626805eb9e812347fbe6-il_794xn.1425195167_fto4.jpg"
  }
 ];
-window.SITE = {"name": "The Food (Kim)ist", "email": "kim@thefoodkimist.com"};
+window.SITE = {"name": "The Food (Kim)ist", "email": "kim@thefoodkimist.com", "signup_url": "https://script.google.com/macros/s/AKfycbyiBzvOhlLLKC-UnEzZeSTuRHzC7YRcmp-fdGNYeu1zDkChvfyF8oPHPHFo2iNgP7gJ_A/exec"};

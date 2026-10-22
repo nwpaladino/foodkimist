@@ -37,11 +37,23 @@
 
   const pages = {
     home() {
-      const f = $("#newsletter");
-      f.addEventListener("submit", (e) => {
-        e.preventDefault(); // TODO: connect to Mailchimp / Buttondown / Formspree
-        $(".form-note").textContent = "Thanks! You're on the list.";
-        f.reset();
+      const f = $("#newsletter"), note = $(".form-note"), btn = $("button", f);
+      f.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (f.website.value) return;              // hidden field only bots fill in
+        const email = f.email.value.trim();
+        if (!SITE.signup_url) { note.textContent = "Sign-ups aren't connected yet."; return; }
+        btn.disabled = true; note.textContent = "Signing you up…";
+        try {
+          // Google Apps Script doesn't send CORS headers, so the reply can't be read;
+          // a network failure still throws and is reported below.
+          await fetch(SITE.signup_url, { method: "POST", mode: "no-cors",
+            body: new URLSearchParams({ email, source: location.pathname }) });
+          note.textContent = "Thanks! You're on the list.";
+          f.reset();
+        } catch {
+          note.textContent = "Something went wrong. Please try again.";
+        } finally { btn.disabled = false; }
       });
     },
 

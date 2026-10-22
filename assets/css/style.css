@@ -283,3 +283,4 @@ input[type=email], input[type=search], input[type=text], input[type=password], i
 .car-btn:disabled { opacity: 0; pointer-events: none; }
 @media (max-width: 860px) { .car-track img { flex-basis: calc((100% - 12px) / 2); width: calc((100% - 12px) / 2); } }
 @media (max-width: 520px) { .car-track img { flex-basis: 82%; width: 82%; } .car-btn.prev { left: 4px; } .car-btn.next { right: 4px; } }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
