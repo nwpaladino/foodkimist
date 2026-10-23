@@ -141,6 +141,25 @@
       draw();
     },
 
+    portfolio() {
+      const items = $$(".pf-item"), box = $(".lightbox"), big = $("img", box);
+      let i = 0;
+      const show = (n) => { i = (n + items.length) % items.length; const im = $("img", items[i]); big.src = im.currentSrc || im.src; big.alt = im.alt; };
+      const open = (n) => { show(n); box.hidden = false; document.body.style.overflow = "hidden"; $(".lb-close", box).focus(); };
+      const close = () => { box.hidden = true; document.body.style.overflow = ""; items[i].focus(); };
+      items.forEach((b, n) => b.addEventListener("click", () => open(n)));
+      $(".lb-close", box).addEventListener("click", close);
+      $(".lb-prev", box).addEventListener("click", () => show(i - 1));
+      $(".lb-next", box).addEventListener("click", () => show(i + 1));
+      box.addEventListener("click", (e) => { if (e.target === box) close(); });
+      document.addEventListener("keydown", (e) => {
+        if (box.hidden) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") show(i - 1);
+        if (e.key === "ArrowRight") show(i + 1);
+      });
+    },
+
     login() {
       $("#login-form").addEventListener("submit", (e) => { e.preventDefault(); $(".form-note").textContent = "Customer accounts aren't available yet."; });
     },
