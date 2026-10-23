@@ -58,6 +58,10 @@
     },
 
     product() {
+      $$(".thumb-btn").forEach((b) => b.addEventListener("click", () => {
+        $("#main-photo").src = b.dataset.full;
+        $$(".thumb-btn").forEach((x) => x.classList.toggle("active", x === b));
+      }));
       const form = $(".add-form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
