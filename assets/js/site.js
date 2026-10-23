@@ -35,6 +35,56 @@
     clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 3200);
   }
 
+  /* ---------- sign-ups (Google Sheet via Apps Script, see build/google-sheet-signup.gs) ---------- */
+  async function subscribe(fields) {
+    // Apps Script doesn't send CORS headers, so the reply can't be read;
+    // a network failure still throws and is reported by the caller.
+    await fetch(SITE.signup_url, { method: "POST", mode: "no-cors", body: new URLSearchParams(fields) });
+  }
+
+  // Any button with data-interest opens the email pop-up and records which button it was.
+  function initInterestButtons() {
+    const buttons = $$("[data-interest]");
+    if (!buttons.length) return;
+    const dlg = document.createElement("dialog");
+    dlg.className = "inquire";
+    dlg.innerHTML = `
+      <form method="dialog" class="inquire-close-form"><button class="inquire-x" aria-label="Close">&times;</button></form>
+      <h2>Let’s formulate.</h2>
+      <p class="inquire-topic">You’re asking about: <strong></strong></p>
+      <p class="inquire-copy">Leave your email and Kim will reach out. You’ll also join the mailing list for promotions and releases.</p>
+      <form class="inquire-form">
+        <input type="email" name="email" required placeholder="Email Address" aria-label="Email Address" autocomplete="email">
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <div class="form-note" role="status"></div>`;
+    document.body.appendChild(dlg);
+    const form = $(".inquire-form", dlg), note = $(".form-note", dlg), submit = $(".inquire-form .btn", dlg);
+    let interest = "";
+    buttons.forEach((b) => b.addEventListener("click", () => {
+      interest = b.dataset.interest;
+      $(".inquire-topic strong", dlg).textContent = interest;
+      form.hidden = false; form.reset(); note.textContent = "";
+      dlg.showModal();
+      form.email.focus();
+    }));
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });   // click outside closes
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (form.website.value) return;
+      if (!SITE.signup_url) { note.textContent = "Sign-ups aren't connected yet."; return; }
+      submit.disabled = true; note.textContent = "Sending…";
+      try {
+        await subscribe({ email: form.email.value.trim(), source: location.pathname, interest });
+        form.hidden = true;
+        note.textContent = "Thanks! Kim will be in touch soon.";
+      } catch {
+        note.textContent = "Something went wrong. Please try again.";
+      } finally { submit.disabled = false; }
+    });
+  }
+
   const pages = {
     home() {
       const f = $("#newsletter"), note = $(".form-note"), btn = $("button", f);
@@ -45,10 +95,7 @@
         if (!SITE.signup_url) { note.textContent = "Sign-ups aren't connected yet."; return; }
         btn.disabled = true; note.textContent = "Signing you up…";
         try {
-          // Google Apps Script doesn't send CORS headers, so the reply can't be read;
-          // a network failure still throws and is reported below.
-          await fetch(SITE.signup_url, { method: "POST", mode: "no-cors",
-            body: new URLSearchParams({ email, source: location.pathname }) });
+          await subscribe({ email, source: location.pathname, interest: "Newsletter" });
           note.textContent = "Thanks! You're on the list.";
           f.reset();
         } catch {
@@ -170,6 +217,7 @@
   };
 
   document.addEventListener("DOMContentLoaded", () => {
+    initInterestButtons();
     const toggle = $(".menu-toggle"), nav = $(".main-nav");
     toggle.addEventListener("click", () => toggle.setAttribute("aria-expanded", nav.classList.toggle("open")));
 
