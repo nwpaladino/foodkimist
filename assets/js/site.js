@@ -52,7 +52,7 @@
       <form method="dialog" class="inquire-close-form"><button class="inquire-x" aria-label="Close">&times;</button></form>
       <h2>Let’s formulate.</h2>
       <p class="inquire-topic">You’re asking about: <strong></strong></p>
-      <p class="inquire-copy">Leave your email and Kim will reach out. You’ll also join the mailing list for promotions and releases.</p>
+      <p class="inquire-copy">Leave your email and Kim will reach out.</p>
       <form class="inquire-form">
         <input type="email" name="email" required placeholder="Email Address" aria-label="Email Address" autocomplete="email">
         <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
