@@ -356,3 +356,61 @@ dialog.inquire::backdrop { background: rgba(17,17,17,.55); }
 .inquire-x:hover { color: var(--ink); }
 .inquire .form-note { margin-top: 12px; font-size: 1rem; }
 button.btn { font-family: var(--ui); }
+
+/* ---------- Oct 26: pages matched to the original Squarespace layouts ---------- */
+:root { --about-bg: #eef7f1; }   /* Squarespace "light-bold" section color; change here if needed */
+
+/* home: 2 x 2 picture tiles */
+.home-tiles { grid-template-columns: 1fr 1fr; }
+
+/* Recipe Development */
+.services h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); }
+.services h4 { font-family: var(--head); font-weight: 500; font-size: 1.35rem; margin: 0 0 1.2em; }
+.rd-center { text-align: center; max-width: 900px; margin: 0 auto; padding: 72px 24px; }
+.rd-center p { color: #333; }
+.reel { position: relative; padding: 0 0 8px; }
+.reel .car-track { gap: 0; height: 75vh; max-height: 820px; }
+.reel .car-track img { flex: 0 0 auto; width: auto; height: 100%; aspect-ratio: auto; object-fit: contain; background: none; scroll-snap-align: start; }
+.reel-controls { display: flex; justify-content: center; gap: 12px; padding: 16px 0 0; }
+.reel .car-btn { position: static; transform: none; box-shadow: none; border: 1px solid var(--line); background: #fff; }
+.reel .car-btn:disabled { opacity: .35; pointer-events: none; }
+.rd-split { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; max-width: var(--max); margin: 0 auto; padding: 64px 24px; }
+.rd-split.img-first { grid-template-columns: 7fr 5fr; }
+.rd-text { text-align: center; }
+.rd-img img { width: 100%; height: auto; display: block; }
+@media (max-width: 800px) {
+  .rd-split, .rd-split.img-first { grid-template-columns: 1fr; gap: 28px; padding: 40px 24px; }
+  .rd-split .rd-img { order: 2; }
+  .reel .car-track { height: 55vh; }
+}
+
+/* Portfolio: full-width masonry, no gutter */
+.portfolio-head { padding-bottom: 48px; text-align: center; }
+.portfolio-head h1 { margin-bottom: 24px; }
+.masonry { display: flex; align-items: flex-start; padding-bottom: 0; }
+.m-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.m-item { display: block; padding: 0; margin: 0; border: 0; background: none; width: 100%; }
+button.m-item { cursor: pointer; }
+.m-item img { width: 100%; height: auto; display: block; transition: opacity .2s; }
+button.m-item:hover img { opacity: .9; }
+@media (max-width: 600px) {
+  .masonry { flex-direction: column; }
+  .m-col { display: contents; }
+}
+
+/* About: light-bold band, 2-col indent / 4-col photo / 6-col text */
+.about-band { background: var(--about-bg); padding: 80px 24px; }
+.about-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 32px; align-items: center; }
+.about-photo { grid-column: 3 / span 4; }
+.about-photo img { width: 100%; height: auto; display: block; }
+.about-text { grid-column: 7 / span 6; }
+.about-text p { margin: 0 0 1.1em; }
+.about-text h4 { font-family: var(--head); font-weight: 500; font-size: 1.15rem; margin: 2em 0 .4em; }
+.about-text h3 { font-family: var(--head); font-weight: 500; font-size: 1.5rem; line-height: 1.35; margin: 0 0 1.4em; }
+.about-text .cred { margin-bottom: 1em; }
+.about-text a { text-underline-offset: 3px; }
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-photo, .about-text { grid-column: auto; }
+  .about-photo { max-width: 420px; margin: 0 auto; width: 100%; }
+}
