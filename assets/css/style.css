@@ -414,3 +414,8 @@ button.m-item:hover img { opacity: .9; }
   .about-photo, .about-text { grid-column: auto; }
   .about-photo { max-width: 420px; margin: 0 auto; width: 100%; }
 }
+
+/* home tiles: one per row on phones (must come after the 2 x 2 rule above) */
+@media (max-width: 700px) {
+  .home-tiles { grid-template-columns: 1fr; gap: 20px; }
+}
